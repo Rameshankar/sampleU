@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "-[PointsRedeemViewController viewDidLoad]:PointsRedeemViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[[AppDelegate user] redeemHistory]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__43+[AFUser redeemHistoryWithCompletionBlock:]_block_invoke:AFUser.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[AppDelegate user].redeemHistory">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

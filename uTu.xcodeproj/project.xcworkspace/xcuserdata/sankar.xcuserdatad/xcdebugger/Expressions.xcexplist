@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "__19+[AFUser getShows:]_block_invoke:AFUser.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[AppDelegate user].selectedShows">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__21+[AFUser getChannels]_block_invoke:AFUser.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[AppDelegate user].channels">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
