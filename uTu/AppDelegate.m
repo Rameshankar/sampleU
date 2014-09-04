@@ -32,6 +32,13 @@ static NSString * const kClientId = @"454288110801-3j09f9dfto3150uajcet2bt3qcp48
         NSLog(@"SIM Available");
     }
     else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"No Sim detected"
+                                                          message:@"Application will quit now."
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        message.delegate = self;
+        [message show];
         NSLog(@"no SIM card installed");
     }
     
@@ -72,6 +79,11 @@ static NSString * const kClientId = @"454288110801-3j09f9dfto3150uajcet2bt3qcp48
     [[iSpeechSDK sharedSDK] setAPIKey:@"14076a7c87838fcd3f0d65deb9ef3ab6"];
     
     return YES;
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    exit(0);
 }
 
 
@@ -205,6 +217,27 @@ static NSString * const kClientId = @"454288110801-3j09f9dfto3150uajcet2bt3qcp48
         [self fetchMessages:self.user.contactId];
     }
     [AFUser getChannels];
+    
+//    if (self.rewardTimer) {
+//        [[AppDelegate user] setIsVoiceSuccess:NO];
+//        [self.rewardTimer invalidate];
+//        if (self.user.rewardCount - 1 != 0) {
+//            [[AppDelegate user] setRewardPoints:[NSString stringWithFormat:@"%d",[[[AppDelegate user] rewardPoints] integerValue] + self.user.rewardCount - 1]];
+//            [AFUser rewardRedeme:[NSString stringWithFormat:@"%d",self.user.rewardCount - 1] withType:@"Earned" quantitiy:@"" name:@""];
+//            [[AppDelegate appDelegate] updateProfileImage];
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                UIAlertView *newAlert = [[UIAlertView alloc]
+//                                         initWithTitle: @"Success"
+//                                         message: [NSString stringWithFormat:@"You earned %d rewards successfully.",self.user.rewardCount- 1]
+//                                         delegate:nil
+//                                         cancelButtonTitle:@"OK"
+//                                         otherButtonTitles:nil];
+//                [newAlert show];
+//                self.user.rewardCount = 0;
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"Reward" object:self];
+//            });
+//        }
+//    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -376,7 +409,7 @@ static NSString * const kClientId = @"454288110801-3j09f9dfto3150uajcet2bt3qcp48
                 dispatch_async(dispatch_get_main_queue(), ^{
                     UIAlertView *newAlert = [[UIAlertView alloc]
                                              initWithTitle: @"Success"
-                                             message: [NSString stringWithFormat:@"You earned %d rewards successfully.",self.user.rewardCount- 1]
+                                             message: [NSString stringWithFormat:@"You earned %d points successfully.",self.user.rewardCount- 1]
                                              delegate:nil
                                              cancelButtonTitle:@"OK"
                                              otherButtonTitles:nil];

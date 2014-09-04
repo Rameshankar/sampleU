@@ -127,7 +127,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 UIAlertView *newAlert = [[UIAlertView alloc]
                                          initWithTitle: @"Success"
-                                         message: [NSString stringWithFormat:@"You earned %d rewards successfully.",[[AppDelegate user] rewardCount] - 1]
+                                         message: [NSString stringWithFormat:@"You earned %d points successfully.",[[AppDelegate user] rewardCount] - 1]
                                          delegate:nil
                                          cancelButtonTitle:@"OK"
                                          otherButtonTitles:nil];
@@ -305,7 +305,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 UIAlertView *newAlert = [[UIAlertView alloc]
                                          initWithTitle: @"Success"
-                                         message: [NSString stringWithFormat:@"You earned %d successfully.",[[AppDelegate user] rewardCount] - 1]
+                                         message: [NSString stringWithFormat:@"You earned %d points successfully.",[[AppDelegate user] rewardCount] - 1]
                                          delegate:nil
                                          cancelButtonTitle:@"OK"
                                          otherButtonTitles:nil];
