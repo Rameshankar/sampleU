@@ -54,6 +54,8 @@
     self.voiceStatusLabel.font = [UIFont Museo500Regular12];
     
     [[[AppDelegate appDelegate] window] addSubview:[[AppDelegate appDelegate] profileView]];
+    
+    self.turnonTVLabel.text = @"Select your show, press here!";
 }
 
 - (void)toggleLabelAlpha {
@@ -63,9 +65,55 @@
 
 - (void) viewWillAppear:(BOOL)animated{
     if ([[AppDelegate user] isShowSelected]) {
-        self.turnonTVLabel.text = @"Turn on TV";
+        // Hide the tvbutton
+        self.voiceStatusLabel.hidden = YES;
+        self.tvButton.hidden = YES;
+        self.tvImage.hidden = YES;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // set the frame for arrow bottom to emicon
+            self.arrowImage.frame = CGRectMake(140, 240, 40, 50);
+            // set the frame for trunontvlable bottom to emicon
+            self.turnonTVLabel.frame = CGRectMake(20, 310, 280, 18);
+            self.turnonTVLabel.text = @"Let's see if your TV is on, press here!";
+        });
     }else{
-        
+        // show the tvbutton
+        self.tvButton.hidden = NO;
+        self.tvImage.hidden = NO;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // reset the arrow frame below to tvbutton
+            self.arrowImage.frame = CGRectMake(140, 344, 40, 50);
+            // reset the frame to turnontvlable below to tvbutton
+            self.turnonTVLabel.frame = CGRectMake(20, 392, 280, 18);
+            self.turnonTVLabel.text = @"Select your show, press here!";
+        });
+    }
+}
+
+- (void) viewDidLayoutSubviews{
+    if ([[AppDelegate user] isShowSelected]) {
+        // Hide the tvbutton
+        self.voiceStatusLabel.hidden = YES;
+        self.tvButton.hidden = YES;
+        self.tvImage.hidden = YES;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // set the frame for arrow bottom to emicon
+            self.arrowImage.frame = CGRectMake(140, 210, 40, 50);
+            // set the frame for trunontvlable bottom to emicon
+            self.turnonTVLabel.frame = CGRectMake(20, 260, 280, 18);
+            self.turnonTVLabel.text = @"Let's see if your TV is on, press here!";
+        });
+    }else{
+        // show the tvbutton
+        self.tvButton.hidden = NO;
+        self.tvImage.hidden = NO;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // reset the arrow frame below to tvbutton
+            self.arrowImage.frame = CGRectMake(140, 344, 40, 50);
+            // reset the frame to turnontvlable below to tvbutton
+            self.turnonTVLabel.frame = CGRectMake(20, 392, 280, 18);
+            self.turnonTVLabel.text = @"Select your show, press here!";
+        });
     }
 }
 
@@ -121,7 +169,7 @@
         NSError *err;
         [recognition setDelegate:self];
         
-        if(![recognition listenAndRecognizeWithTimeout:15 error:&err]) {
+        if(![recognition listenAndRecognizeWithTimeout:5 error:&err]) {
             NSLog(@"ERROR: %@", err);
         }
     }else{
@@ -145,19 +193,23 @@
 	NSLog(@"Method: %@", NSStringFromSelector(_cmd));
 	NSLog(@"Result: %@", result.text);
     if (result.text && result.text.length > 0) {
-        [[AppDelegate user] setRewardPoints:[NSString stringWithFormat:@"%d",[[[AppDelegate user] rewardPoints] integerValue] + 30]];
-        [AFUser rewardRedeme:@"30" withType:@"Earned" quantitiy:@"" name:@""];
-        [[AppDelegate appDelegate] updateProfileImage];
-        self.turnonTVLabel.text = @"Select your show";
+//        [[AppDelegate user] setRewardPoints:[NSString stringWithFormat:@"%d",[[[AppDelegate user] rewardPoints] integerValue] + 30]];
+//        [AFUser rewardRedeme:@"30" withType:@"Earned" quantitiy:@"" name:@""];
+//        [[AppDelegate appDelegate] updateProfileImage];
+        self.voiceStatusLabel.hidden = YES;
+        [[AppDelegate user] setIsVoiceSuccess:YES];
+        [((MainTabBarViewController *)self.parentViewController) setSelectedIndex:0];
+        self.turnonTVLabel.text = @"Select your show, press here!";
         [[AppDelegate user] setIsShowSelected:NO];
         [[AppDelegate user] saveStateInUserDefaults];
     }else{
         [self.timer invalidate];
-        double delayInSeconds = 3;
-        self.turnonTVLabel.text = @"No noice detected, please try again!";
+        double delayInSeconds = 2;
+        self.voiceStatusLabel.hidden = NO;
+        self.voiceStatusLabel.text = @"No noice detected. Let's try again!";
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            self.turnonTVLabel.text = @"Turn on TV";
+            self.turnonTVLabel.text = @"Press here!";
             self.timer = [NSTimer scheduledTimerWithTimeInterval:0.4 target:self selector:@selector(toggleLabelAlpha) userInfo:nil repeats:YES];
         });
     }
@@ -169,11 +221,12 @@
 	NSLog(@"Method: %@", NSStringFromSelector(_cmd));
 	NSLog(@"Error: %@", error);
     [self.timer invalidate];
-    double delayInSeconds = 3;
-    self.turnonTVLabel.text = @"No noice detected, please try again!";
+    double delayInSeconds = 2;
+    self.voiceStatusLabel.hidden = NO;
+    self.voiceStatusLabel.text = @"No noice detected. Let's try again!";
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        self.turnonTVLabel.text = @"Turn on TV";
+        self.turnonTVLabel.text = @"Press here!";
         self.timer = [NSTimer scheduledTimerWithTimeInterval:0.4 target:self selector:@selector(toggleLabelAlpha) userInfo:nil repeats:YES];
     });
 }
@@ -181,11 +234,12 @@
 - (void)recognitionCancelledByUser:(ISSpeechRecognition *)speechRecognition {
 	NSLog(@"Method: %@", NSStringFromSelector(_cmd));
     [self.timer invalidate];
-    double delayInSeconds = 3;
-    self.turnonTVLabel.text = @"No noice detected, please try again!";
+    double delayInSeconds = 2;
+    self.voiceStatusLabel.hidden = NO;
+    self.voiceStatusLabel.text = @"No noice detected. Let's please try again!";
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        self.turnonTVLabel.text = @"Turn on TV";
+        self.turnonTVLabel.text = @"Press here!";
         self.timer = [NSTimer scheduledTimerWithTimeInterval:0.4 target:self selector:@selector(toggleLabelAlpha) userInfo:nil repeats:YES];
     });
 }

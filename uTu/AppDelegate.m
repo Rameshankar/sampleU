@@ -13,6 +13,7 @@
 #import <Social/Social.h>
 #import "UIFont+uTu.h"
 #import "iSpeechSDK.h"
+#import <MessageUI/MessageUI.h>
 
 @interface AppDelegate () <GPPDeepLinkDelegate>
 @property (strong, nonatomic) NSString *imageString;
@@ -26,6 +27,14 @@ static NSString * const kClientId = @"454288110801-3j09f9dfto3150uajcet2bt3qcp48
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    if([MFMessageComposeViewController canSendText]){
+        NSLog(@"SIM Available");
+    }
+    else {
+        NSLog(@"no SIM card installed");
+    }
+    
     [GPPSignIn sharedInstance].clientID = kClientId;
     [self initializeUser];
     
@@ -335,10 +344,57 @@ static NSString * const kClientId = @"454288110801-3j09f9dfto3150uajcet2bt3qcp48
 
 - (void) loadContacts
 {
+    //comment these lines development mode
     //    NSLog(@"contact %@",[[self user] utuContacts]);
     dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [AFUser fetchutuContacts];
     });
+}
+
+- (void)recorderTimer{
+    [self rewardTimerStarts];
+    self.rewardTimer = [NSTimer scheduledTimerWithTimeInterval:60
+                                                  target:self
+                                                selector:@selector(rewardTimerStarts)
+                                                userInfo:nil
+                                                 repeats:YES];
+}
+
+- (void) rewardTimerStarts{
+    if (self.user.remainingTime != 0) {
+        self.user.remainingTime = self.user.remainingTime - 1;
+        self.user.rewardCount = self.user.rewardCount + 1;
+        NSLog(@"count : %d", self.user.rewardCount);
+        
+        if (self.user.remainingTime == 0) {
+            [[AppDelegate user] setIsVoiceSuccess:NO];
+            [self.rewardTimer invalidate];
+            if (self.user.rewardCount - 1 != 0) {
+                [[AppDelegate user] setRewardPoints:[NSString stringWithFormat:@"%d",[[[AppDelegate user] rewardPoints] integerValue] + self.user.rewardCount - 1]];
+                [AFUser rewardRedeme:[NSString stringWithFormat:@"%d",self.user.rewardCount - 1] withType:@"Earned" quantitiy:@"" name:@""];
+                [[AppDelegate appDelegate] updateProfileImage];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIAlertView *newAlert = [[UIAlertView alloc]
+                                             initWithTitle: @"Success"
+                                             message: [NSString stringWithFormat:@"You earned %d rewards successfully.",self.user.rewardCount- 1]
+                                             delegate:nil
+                                             cancelButtonTitle:@"OK"
+                                             otherButtonTitles:nil];
+                    [newAlert show];
+                    self.user.rewardCount = 0;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"Reward" object:self];
+                });
+            }
+        }
+    }else{
+//        [[AppDelegate user] setIsVoiceSuccess:NO];
+//        [self.rewardTimer invalidate];
+//        [[AppDelegate user] setRewardPoints:[NSString stringWithFormat:@"%d",[[[AppDelegate user] rewardPoints] integerValue] + self.user.rewardCount]];
+//        [AFUser rewardRedeme:[NSString stringWithFormat:@"%d",self.user.rewardCount] withType:@"Earned" quantitiy:@"" name:@""];
+//        [[AppDelegate appDelegate] updateProfileImage];
+//        self.user.rewardCount = 0;
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"Reward" object:self];
+    }
 }
 
 @end

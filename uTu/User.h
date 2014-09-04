@@ -20,6 +20,9 @@
 @property BOOL isutuContactsLoaded;
 @property BOOL isShowSelected;
 @property BOOL isFav;
+@property BOOL isVoiceSuccess;
+@property int remainingTime;
+@property int rewardCount;
 
 @property (nonatomic, strong) NSString *id;
 @property (nonatomic, strong) NSString *username;

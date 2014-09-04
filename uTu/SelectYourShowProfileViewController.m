@@ -42,6 +42,8 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reating:) name:@"Rating" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rewarding:) name:@"Reward" object:nil];
+    
     if([[[UIDevice currentDevice] systemVersion] hasPrefix: @"7"]){
         UILabel *nav_titlelbl=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.navigationItem.titleView.frame.size.width,40)];
         nav_titlelbl.text=@"Select Your Show";
@@ -93,11 +95,116 @@
     self.staticStarRatingView.canEdit = YES;
 }
 
+- (void) rewarding:(NSNotification *) notification{
+    [self viewWillAppear:YES];
+}
+
 - (IBAction)menuButton:(id)sender{
     self.tempView.hidden = YES;
 }
 
+- (void) viewDidDisappear:(BOOL)animated{
+    if ([[AppDelegate user] isVoiceSuccess]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIAlertView *newAlert = [[UIAlertView alloc]
+                                     initWithTitle: @"Oops!"
+                                     message: @"You discarded the reward process."
+                                     delegate:nil
+                                     cancelButtonTitle:@"OK"
+                                     otherButtonTitles:nil];
+            [newAlert show];
+        });
+        
+        [[AppDelegate user] setIsVoiceSuccess:NO];
+        self.tuneInLabel.text = @"Tune-Out";
+        
+        [[[AppDelegate appDelegate] rewardTimer] invalidate];
+        
+        if ([[AppDelegate user] rewardCount] - 1 != 0) {
+            [[AppDelegate user] setRewardPoints:[NSString stringWithFormat:@"%d",[[[AppDelegate user] rewardPoints] integerValue] + [[AppDelegate user] rewardCount] - 1]];
+            [AFUser rewardRedeme:[NSString stringWithFormat:@"%d",[[AppDelegate user] rewardCount] - 1] withType:@"Earned" quantitiy:@"" name:@""];
+            [[AppDelegate appDelegate] updateProfileImage];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertView *newAlert = [[UIAlertView alloc]
+                                         initWithTitle: @"Success"
+                                         message: [NSString stringWithFormat:@"You earned %d rewards successfully.",[[AppDelegate user] rewardCount] - 1]
+                                         delegate:nil
+                                         cancelButtonTitle:@"OK"
+                                         otherButtonTitles:nil];
+                [newAlert show];
+                [AppDelegate user].rewardCount = 0;
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"Reward" object:self];
+            });
+        }
+//        self.user.rewardCount = 0;
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"Reward" object:self];
+//        
+//        [[AppDelegate user] setIsVoiceSuccess:NO];
+//        [[AppDelegate user] setRewardPoints:[NSString stringWithFormat:@"%d",[[[AppDelegate user] rewardPoints] integerValue] + [[AppDelegate user] rewardCount]]];
+//        [AFUser rewardRedeme:[NSString stringWithFormat:@"%d",[[AppDelegate user] rewardCount]] withType:@"Earned" quantitiy:@"" name:@""];
+//        [[AppDelegate appDelegate] updateProfileImage];
+//        [AppDelegate user].rewardCount = 0;
+    }
+}
+
 - (void) viewWillAppear:(BOOL)animated{
+    //Current time
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"hh:mma"];
+    NSString *time = [formatter stringFromDate:[NSDate date]];
+    if ([time hasPrefix:@"0"] && [time length] > 1) {
+        time = [time substringFromIndex:1];
+    }
+    
+    NSArray *timeArray = [time componentsSeparatedByString:@":"];
+    
+    NSString *firstTwo = [timeArray objectAtIndex:0];
+    NSString *ampm = [timeArray objectAtIndex:1];
+    NSString *lastTwo = [ampm substringFromIndex: [ampm length] - 2];
+    NSString *middleTwo = [ampm substringToIndex:2];
+    
+    int currentSec = [middleTwo integerValue];
+    
+    NSLog(@"Current Time: %@ length : %d substring: %@", [time lowercaseString], time.length, [time substringToIndex:2]);
+    
+    // Actual show time
+    NSString *showTime = [self.show objectForKey:@"show_time"];
+    NSLog(@"show Time: %@ length : %d", showTime, showTime.length);
+    
+    NSArray *timeArray1 = [showTime componentsSeparatedByString:@":"];
+    
+    NSString *firstTwo1 = [timeArray1 objectAtIndex:0];
+    NSString *ampm1 = [timeArray1 objectAtIndex:1];
+    NSString *lastTwo1 = [ampm1 substringFromIndex: [ampm1 length] - 2];
+    NSString *middleTwo1 = [ampm1 substringToIndex:2];
+    
+    int endTime1 = [middleTwo1 integerValue] + 30;
+    int startTime1 = [middleTwo1 integerValue];
+    
+    
+    if ([[AppDelegate user] isVoiceSuccess]) {
+        self.tuneInLabel.text = @"Tune-Out";
+        [AppDelegate user].remainingTime = endTime1 - currentSec;
+        [[AppDelegate appDelegate] recorderTimer];
+        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertView *newAlert = [[UIAlertView alloc]
+                                         initWithTitle: @"Success"
+                                         message: @"Reward process started please stay tune."
+                                         delegate:nil
+                                         cancelButtonTitle:@"OK"
+                                         otherButtonTitles:nil];
+                [newAlert show];
+            });
+        });
+    }else{
+        if ([firstTwo isEqualToString:firstTwo1] && [[lastTwo lowercaseString] isEqualToString:[lastTwo1 lowercaseString]] && currentSec >= startTime1 && currentSec <= endTime1) {
+            self.tuneInLabel.text = @"Tune-In";
+        }else{
+            self.tuneInLabel.text = [NSString stringWithFormat:@"Show Timing: %@", showTime];
+        }
+    }
+    
     [[AppDelegate appDelegate] updateProfileImage];
     if ([[AppDelegate user] isFav]) {
         self.remindMeView.hidden = NO;
@@ -176,8 +283,43 @@
 }
 
 - (IBAction)tuneInButton:(id)sender {
-    [[AppDelegate user] setIsShowSelected:YES];
-    [((MainTabBarViewController *)((SelectYourShowViewController *)self.parentViewController).parentViewController) setSelectedIndex:2];
+    if ([self.tuneInLabel.text isEqualToString:@"Tune-Out"]) {
+        [[AppDelegate user] setIsVoiceSuccess:NO];
+        self.tuneInLabel.text = @"Tune-In";
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIAlertView *newAlert = [[UIAlertView alloc]
+                                     initWithTitle: @"Oops!"
+                                     message: @"You discarded the reward process."
+                                     delegate:nil
+                                     cancelButtonTitle:@"OK"
+                                     otherButtonTitles:nil];
+            [newAlert show];
+        });
+        
+        [[[AppDelegate appDelegate] rewardTimer] invalidate];
+        
+        if ([[AppDelegate user] rewardCount] - 1 != 0) {
+            [[AppDelegate user] setRewardPoints:[NSString stringWithFormat:@"%d",[[[AppDelegate user] rewardPoints] integerValue] + [[AppDelegate user] rewardCount] - 1]];
+            [AFUser rewardRedeme:[NSString stringWithFormat:@"%d",[[AppDelegate user] rewardCount] - 1] withType:@"Earned" quantitiy:@"" name:@""];
+            [[AppDelegate appDelegate] updateProfileImage];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertView *newAlert = [[UIAlertView alloc]
+                                         initWithTitle: @"Success"
+                                         message: [NSString stringWithFormat:@"You earned %d successfully.",[[AppDelegate user] rewardCount] - 1]
+                                         delegate:nil
+                                         cancelButtonTitle:@"OK"
+                                         otherButtonTitles:nil];
+                [newAlert show];
+                [AppDelegate user].rewardCount = 0;
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"Reward" object:self];
+            });
+        }
+    }else if ([self.tuneInLabel.text isEqualToString:@"Tune-In"]){
+        [[AppDelegate user] setIsShowSelected:YES];
+        [((MainTabBarViewController *)((SelectYourShowViewController *)self.parentViewController).parentViewController) setSelectedIndex:2];
+    }else{
+        
+    }
 //    self.tvViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"TVViewController"];
 //    self.navigationController.navigationBar.hidden = YES;
 //    [self.navigationController pushViewController:self.tvViewController animated:YES];

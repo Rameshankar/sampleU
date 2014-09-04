@@ -16,7 +16,7 @@
 @class GTMOAuth2Authentication;
 @class DropDownDemoViewController;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate,GPPDeepLinkDelegate>{
+@interface AppDelegate : UIResponder <UIApplicationDelegate,GPPDeepLinkDelegate,UIApplicationDelegate>{
     UITabBarController *tabBarController;
 }
 
@@ -28,6 +28,7 @@
 @property (nonatomic, strong) STTwitterAPI *twitter;
 
 @property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, strong) NSTimer *rewardTimer;
 
 @property(strong, nonatomic) UINavigationController *navigationController;
 @property(strong, nonatomic) InviteFriendsViewController *inviteFriendsViewController;
@@ -43,5 +44,6 @@
 + (STTwitterAPI *)twitter;
 - (void) updateProfileImage;
 + (AppDelegate *)appDelegate;
+- (void)recorderTimer;
 
 @end

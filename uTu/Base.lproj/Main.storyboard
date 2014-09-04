@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4510" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="tpm-ow-wLM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="tpm-ow-wLM">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -136,7 +136,7 @@
                                     <action selector="emiconButton:" destination="hqc-BU-Fty" eventType="touchUpInside" id="qBd-79-Awe"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No voice is detected. Let's try again!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tp7-xX-Cx0">
+                            <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No voice is detected. Let's try again!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tp7-xX-Cx0">
                                 <rect key="frame" x="30" y="60" width="260" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -151,9 +151,11 @@
                     </tabBarItem>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="arrowImage" destination="S0B-AD-01T" id="u7k-Np-VG6"/>
                         <outlet property="emiconButton" destination="oUg-gz-0Tt" id="MOM-IT-g33"/>
                         <outlet property="turnonTVLabel" destination="u66-mz-dOb" id="JZg-e9-3UF"/>
                         <outlet property="tvButton" destination="QFg-am-8VZ" id="VO5-Js-mjG"/>
+                        <outlet property="tvImage" destination="KG3-en-LLr" id="dl1-K3-R1c"/>
                         <outlet property="uTuLogoImage" destination="k2i-H6-lKj" id="rcP-KX-IsF"/>
                         <outlet property="voiceStatusLabel" destination="tp7-xX-Cx0" id="U4o-DS-mQC"/>
                     </connections>
@@ -5227,6 +5229,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="130" height="568"/>
                     <connections>
                         <outlet property="selectChannelLabel" destination="HVE-Cw-9rR" id="Ucl-qx-5OL"/>
                         <outlet property="tableView" destination="Bve-v4-rCF" id="rHl-rx-Gkt"/>
@@ -5769,7 +5772,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="anT-92-2wC"/>
+        <segue reference="ynJ-Vh-3WC"/>
         <segue reference="SY8-cP-9eN"/>
     </inferredMetricsTieBreakers>
 </document>

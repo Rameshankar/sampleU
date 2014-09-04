@@ -22,6 +22,8 @@
 @property (strong, nonatomic) SelectYourShowViewController *selectYourShowViewController;
 @property (weak, nonatomic) IBOutlet UIButton *emiconButton;
 @property (weak, nonatomic) IBOutlet UILabel *voiceStatusLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *arrowImage;
+@property (weak, nonatomic) IBOutlet UIImageView *tvImage;
 
 - (IBAction)tvButton:(id)sender;
 - (IBAction)emiconButton:(id)sender;
