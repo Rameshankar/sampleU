@@ -1866,8 +1866,8 @@
 		015C219A18E1904E00E4D7BD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: shailesh upreti (V7X7G742DX)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shailesh upreti (V7X7G742DX)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: oumsaai llc (5YP8D4CMQ6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: oumsaai llc (5YP8D4CMQ6)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/sankar/Pictures/uTu,
@@ -1893,7 +1893,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8920D836-090F-410C-B76E-002ECDD1F4A8";
+				PROVISIONING_PROFILE = "5e1019e5-928b-4dda-8872-cacf014dfd27";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1901,8 +1901,8 @@
 		015C219B18E1904E00E4D7BD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: shailesh upreti (V7X7G742DX)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: shailesh upreti (V7X7G742DX)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: oumsaai llc (5YP8D4CMQ6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: oumsaai llc (5YP8D4CMQ6)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/sankar/Pictures/uTu,
@@ -1928,7 +1928,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8920D836-090F-410C-B76E-002ECDD1F4A8";
+				PROVISIONING_PROFILE = "5e1019e5-928b-4dda-8872-cacf014dfd27";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -78,7 +78,12 @@
     
     self.imageTitleLabel.text = [self.show objectForKey:@"show_title"];
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSString *imageURL = [NSString stringWithFormat:@"http://54.255.206.204:3000%@",[self.show objectForKey:@"program_image"]];
+        NSString *imageURL;
+        if ([self.show objectForKey:@"show_image"] != [NSNull null]) {
+            imageURL = [self.show objectForKey:@"show_image"];
+        }else{
+            imageURL = [NSString stringWithFormat:@"http://54.255.206.204:3000%@",[self.show objectForKey:@"program_image"]];
+        }
         if (imageURL){
             imageURL = [imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             [self.photoPic setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"ola-mundo-icon.png"]];

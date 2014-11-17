@@ -14,7 +14,7 @@
 #import "SelectYourShowViewController.h"
 
 @interface CheckoutViewController ()
-
+@property (nonatomic, strong) NSMutableArray *movies;
 @end
 
 @implementation CheckoutViewController{
@@ -34,6 +34,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.movies = [[NSMutableArray alloc] init];
+    NSArray *movies = [self.redeemOption objectForKey:@"movies"];
+    
+    for (int i=0; i< movies.count; i++) {
+        NSDictionary *movie = [movies objectAtIndex:i];
+        [self.movies addObject:[movie objectForKey:@"name"]];
+    }
+    
+    NSLog(@"movies %@", self.movies);
     
     if([[[UIDevice currentDevice] systemVersion] hasPrefix: @"7"]){
         UILabel *nav_titlelbl=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.navigationItem.titleView.frame.size.width,40)];
@@ -98,7 +108,7 @@
         return;
     }
     
-    if ([self.movieTicketsLabel.text isEqualToString:@"Select Your Movie"]) {
+    if ([self.selectMovieLabel.text isEqualToString:@"Select Your Movie"]) {
         UIAlertView *newAlert = [[UIAlertView alloc]
                                  initWithTitle: @"Oops!"
                                  message: @"Please select movie."
@@ -140,8 +150,10 @@
 }
 
 - (IBAction)selectMovieButton:(id)sender {
-    actionSheet2 = [[UIActionSheet alloc] initWithTitle:@"Please select movie" delegate:self cancelButtonTitle:@"Cancel"  destructiveButtonTitle:nil otherButtonTitles:@"movie1",@"movie2",@"movie3",Nil];
-    
+    actionSheet2 = [[UIActionSheet alloc] initWithTitle:@"Please select movie" delegate:self cancelButtonTitle:@"Cancel"  destructiveButtonTitle:nil otherButtonTitles:nil];
+    for (int i=0; i<self.movies.count; i++) {
+        [actionSheet2 addButtonWithTitle:[self.movies objectAtIndex:i]];
+    }
     [actionSheet2 showInView:self.view];
 }
 
@@ -168,15 +180,15 @@
         }
     }else if (actionSheet == actionSheet2) {
         NSLog(@"actionsheet1");
-        if (buttonIndex == 0) {
-            self.selectMovieLabel.text = @"movie1";
+        if (buttonIndex != 0) {
+            self.selectMovieLabel.text = [self.movies objectAtIndex:buttonIndex-1];
         }
-        if (buttonIndex == 1) {
-            self.selectMovieLabel.text = @"movie2";
-        }
-        if (buttonIndex == 2) {
-            self.selectMovieLabel.text = @"movie3";
-        }
+//        if (buttonIndex == 1) {
+//            self.selectMovieLabel.text = @"movie2";
+//        }
+//        if (buttonIndex == 2) {
+//            self.selectMovieLabel.text = @"movie3";
+//        }
     }
 }
 

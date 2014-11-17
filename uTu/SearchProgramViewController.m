@@ -38,6 +38,10 @@
 
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [self.tableView reloadData];
+}
+
 -(void)dismissKeyboard {
 	[self.programSearchBar resignFirstResponder];
     [tempView removeFromSuperview];
@@ -51,6 +55,11 @@
                                    initWithTarget:self
                                    action:@selector(dismissKeyboard)];
     [tempView addGestureRecognizer:tap];
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar{
+    [tempView removeFromSuperview];
+    return YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -68,7 +77,9 @@
     void(^sendProfileInfoCompletionBlock)(NSError *error) = ^void(NSError *error)
     {
         // hide the mbHud
-        [self.mbHUD setHidden:YES];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.mbHUD setHidden:YES];
+        });
         if (error) {
             NSLog(@"error %@",error);
             //show server error message. username is already taken
@@ -123,7 +134,12 @@
     cell.nameLabel.text = [show objectForKey:@"show_title"];
     cell.channelLabel.text = [show objectForKey:@"channel_name"];
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSString *imageURL = [NSString stringWithFormat:@"http://54.255.206.204:3000%@",[show objectForKey:@"program_image"]];
+        NSString *imageURL;
+        if ([show objectForKey:@"show_image"] != [NSNull null]) {
+            imageURL = [show objectForKey:@"show_image"];
+        }else{
+            imageURL = [NSString stringWithFormat:@"http://54.255.206.204:3000%@",[show objectForKey:@"program_image"]];
+        }
         if (imageURL){
             imageURL = [imageURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             [cell.showImage setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"ola-mundo-icon.png"]];

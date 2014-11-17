@@ -69,6 +69,7 @@ static NSString * const kClientId = @"454288110801-3j09f9dfto3150uajcet2bt3qcp48
     
     self.user.utuContacts = [[NSMutableDictionary alloc] init];
     self.user.temputuContacts = [[NSMutableDictionary alloc] init];
+    self.user.searchResults = [[NSMutableArray alloc] init];
     
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
      (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
