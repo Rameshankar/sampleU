@@ -3,6 +3,14 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "__43+[AFUser redeemHistoryWithCompletionBlock:]_block_invoke:AFUser.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[AppDelegate user].redeemHistory">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[PointsRedeemViewController viewDidLoad]:PointsRedeemViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -11,10 +19,26 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "__43+[AFUser redeemHistoryWithCompletionBlock:]_block_invoke:AFUser.m">
+         contextName = "-[uTuFriendsViewController tableView:cellForRowAtIndexPath:]:uTuFriendsViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "[AppDelegate user].redeemHistory">
+               value = "[[AppDelegate user] temputuContacts]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "__43-[uTuFriendsViewController viewWillAppear:]_block_invoke:uTuFriendsViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[[AppDelegate user] temputuContacts]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[SelectYourShowProfileViewController viewWillAppear:]:SelectYourShowProfileViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "timeArray1">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

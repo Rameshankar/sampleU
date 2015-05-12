@@ -1035,7 +1035,7 @@
     NSMutableURLRequest *request = [client requestWithMethod:@"GET" path:path parameters:parameters];
     [request setTimeoutInterval:20.0];
     
-    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request     success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
     }failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         NSLog(@"Error = %@", error);
     }];

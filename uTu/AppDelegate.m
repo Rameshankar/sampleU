@@ -28,19 +28,19 @@ static NSString * const kClientId = @"454288110801-3j09f9dfto3150uajcet2bt3qcp48
 {
     // Override point for customization after application launch.
     
-    if([MFMessageComposeViewController canSendText]){
-        NSLog(@"SIM Available");
-    }
-    else {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"No Sim detected"
-                                                          message:@"Application will quit now."
-                                                         delegate:nil
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles:nil];
-        message.delegate = self;
-        [message show];
-        NSLog(@"no SIM card installed");
-    }
+//    if([MFMessageComposeViewController canSendText]){
+//        NSLog(@"SIM Available");
+//    }
+//    else {
+//        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"No Sim detected"
+//                                                          message:@"Application will quit now."
+//                                                         delegate:nil
+//                                                cancelButtonTitle:@"OK"
+//                                                otherButtonTitles:nil];
+//        message.delegate = self;
+//        [message show];
+//        NSLog(@"no SIM card installed");
+//    }
     
     [GPPSignIn sharedInstance].clientID = kClientId;
     [self initializeUser];
@@ -67,8 +67,8 @@ static NSString * const kClientId = @"454288110801-3j09f9dfto3150uajcet2bt3qcp48
     
     [self initTimer];
     
-    self.user.utuContacts = [[NSMutableDictionary alloc] init];
-    self.user.temputuContacts = [[NSMutableDictionary alloc] init];
+//    self.user.utuContacts = [[NSMutableDictionary alloc] init];
+//    self.user.temputuContacts = [[NSMutableDictionary alloc] init];
     self.user.searchResults = [[NSMutableArray alloc] init];
     
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:

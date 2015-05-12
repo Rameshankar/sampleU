@@ -164,6 +164,9 @@
     NSArray *timeArray = [time componentsSeparatedByString:@":"];
     
     NSString *firstTwo = [timeArray objectAtIndex:0];
+    if (firstTwo.length == 1) {
+        firstTwo = [NSString stringWithFormat:@"0%@",firstTwo];
+    }
     NSString *ampm = [timeArray objectAtIndex:1];
     NSString *lastTwo = [ampm substringFromIndex: [ampm length] - 2];
     NSString *middleTwo = [ampm substringToIndex:2];
